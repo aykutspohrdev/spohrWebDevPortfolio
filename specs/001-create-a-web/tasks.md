@@ -50,15 +50,15 @@ src/
 ```
 
 ## Phase 3.1: Project Setup
-- [ ] T001 Create Next.js 14+ TypeScript project with App Router in repository root
-- [ ] T002 Install and configure TailwindCSS with design token structure
-- [ ] T003 [P] Set up project folder structure per specification in src/
-- [ ] T004 [P] Create standard .gitignore for Next.js project
-- [ ] T005 [P] Configure TypeScript with strict mode and path aliases
+- [x] T001 Create Next.js 14+ TypeScript project with App Router in repository root
+- [x] T002 Install and configure TailwindCSS with design token structure
+- [x] T003 [P] Set up project folder structure per specification in src/
+- [x] T004 [P] Create standard .gitignore for Next.js project
+- [x] T005 [P] Configure TypeScript with strict mode and path aliases
 
 ## Phase 3.2: Foundation & Design System
-- [ ] T006 [P] Create design token definitions in src/styles/tokens.css
-- [ ] T007 [P] Implement dark/light theme system with CSS custom properties in src/lib/theme.ts
+- [x] T006 [P] Create design token definitions in src/styles/tokens.css
+- [x] T007 [P] Implement dark/light theme system with CSS custom properties in src/lib/theme.ts
 - [ ] T008 [P] Create theme provider component in src/components/ThemeProvider.tsx
 - [ ] T009 [P] Build responsive navigation component in src/components/Navigation.tsx
 - [ ] T010 [P] Create fragment navigation utilities in src/lib/navigation.ts
