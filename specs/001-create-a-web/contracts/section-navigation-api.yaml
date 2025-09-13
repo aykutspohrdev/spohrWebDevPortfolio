@@ -1,0 +1,146 @@
+openapi: 3.0.3
+info:
+  title: Section Navigation API
+  version: 1.0.0
+  description: Frontend API contracts for URL fragment navigation and section management
+
+paths:
+  /navigation/sections:
+    get:
+      summary: Get available page sections
+      description: Returns list of navigable sections with metadata
+      tags:
+        - Navigation
+      responses:
+        '200':
+          description: List of page sections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PageSection'
+
+  /navigation/scroll:
+    post:
+      summary: Navigate to section
+      description: Programmatically scroll to section with accessibility focus management
+      tags:
+        - Navigation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScrollRequest'
+      responses:
+        '200':
+          description: Navigation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NavigationResponse'
+        '400':
+          description: Invalid section ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NavigationError'
+
+components:
+  schemas:
+    PageSection:
+      type: object
+      required:
+        - id
+        - title
+        - displayOrder
+      properties:
+        id:
+          type: string
+          pattern: '^[a-z][a-z0-9\-]*$'
+          example: "hero"
+          description: "URL-safe section identifier for fragment navigation"
+        title:
+          type: string
+          minLength: 1
+          maxLength: 50
+          example: "Start"
+          description: "Display title for navigation menu"
+        headingLevel:
+          type: integer
+          minimum: 1
+          maximum: 6
+          example: 2
+          description: "Semantic heading level for accessibility"
+        displayOrder:
+          type: integer
+          minimum: 0
+          example: 0
+          description: "Sort order for navigation menu"
+        isVisible:
+          type: boolean
+          example: true
+          description: "Whether section should appear in navigation"
+        ariaLabel:
+          type: string
+          maxLength: 100
+          example: "Startbereich mit Hauptinformationen"
+          description: "Accessible label for screen readers"
+
+    ScrollRequest:
+      type: object
+      required:
+        - sectionId
+      properties:
+        sectionId:
+          type: string
+          pattern: '^[a-z][a-z0-9\-]*$'
+          example: "services"
+        behavior:
+          type: string
+          enum: ["smooth", "instant", "auto"]
+          default: "smooth"
+        updateHistory:
+          type: boolean
+          default: true
+          description: "Whether to update browser history"
+        focusOnNavigation:
+          type: boolean
+          default: true
+          description: "Whether to move focus for accessibility"
+
+    NavigationResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        currentSection:
+          type: string
+          example: "services"
+        url:
+          type: string
+          example: "/#services"
+        scrollPosition:
+          type: integer
+          example: 1200
+          description: "Final scroll position in pixels"
+
+    NavigationError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "SECTION_NOT_FOUND"
+        message:
+          type: string
+          example: "Section 'invalid-section' does not exist"
+        availableSections:
+          type: array
+          items:
+            type: string
+          example: ["hero", "services", "portfolio", "pricing", "about", "contact"]

@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  title: Contact Form API
+  version: 1.0.0
+  description: API for handling contact form submissions with GDPR compliance
+
+paths:
+  /api/contact:
+    post:
+      summary: Submit contact form
+      description: Submit a contact inquiry with GDPR-compliant privacy consent
+      tags:
+        - Contact
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactInquiry'
+      responses:
+        '200':
+          description: Contact form submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/health:
+    get:
+      summary: Health check endpoint
+      description: Check if the contact API is operational
+      tags:
+        - System
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+components:
+  schemas:
+    ContactInquiry:
+      type: object
+      required:
+        - name
+        - email
+        - projectType
+        - message
+        - privacyConsent
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: '^[a-zA-ZäöüßÄÖÜ\s\-\.]+$'
+          example: "Max Mustermann"
+        email:
+          type: string
+          format: email
+          maxLength: 254
+          example: "max.mustermann@example.com"
+        company:
+          type: string
+          maxLength: 100
+          example: "Mustermann GmbH"
+        phone:
+          type: string
+          pattern: '^\+?[1-9]\d{1,14}$'
+          example: "+49 30 12345678"
+        projectType:
+          type: string
+          enum:
+            - "landing"
+            - "standard"
+            - "custom"
+            - "consultation"
+          example: "standard"
+        budget:
+          type: string
+          enum:
+            - "under-5000"
+            - "5000-10000"
+            - "10000-25000"
+            - "25000-50000"
+            - "over-50000"
+            - "to-discuss"
+          example: "5000-10000"
+        timeline:
+          type: string
+          enum:
+            - "asap"
+            - "1-month"
+            - "2-3-months"
+            - "3-6-months"
+            - "flexible"
+          example: "2-3-months"
+        message:
+          type: string
+          minLength: 20
+          maxLength: 1000
+          example: "Ich benötige eine professionelle Website für mein Unternehmen..."
+        privacyConsent:
+          type: boolean
+          example: true
+          description: "Must be true for GDPR compliance"
+        marketingConsent:
+          type: boolean
+          example: false
+          description: "Optional consent for marketing communications"
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Ihre Anfrage wurde erfolgreich übermittelt. Wir melden uns innerhalb von 24 Stunden bei Ihnen."
+        inquiryId:
+          type: string
+          example: "inq_2025_001"
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: "Validierungsfehler in den Formulardaten"
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "email"
+              message:
+                type: string
+                example: "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+
+  securitySchemes:
+    RateLimitHeaders:
+      type: apiKey
+      in: header
+      name: X-RateLimit-Limit
+      description: "Cloudflare Workers rate limiting"

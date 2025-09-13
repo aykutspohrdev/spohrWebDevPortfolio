@@ -1,0 +1,254 @@
+openapi: 3.0.3
+info:
+  title: Theme Management API
+  version: 1.0.0
+  description: Frontend API contracts for dark/light mode theme management
+
+paths:
+  /theme/current:
+    get:
+      summary: Get current theme
+      description: Returns current theme preference and system detection
+      tags:
+        - Theme
+      responses:
+        '200':
+          description: Current theme information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeState'
+
+    post:
+      summary: Set theme preference
+      description: Update user's theme preference with persistence
+      tags:
+        - Theme
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ThemeUpdateRequest'
+      responses:
+        '200':
+          description: Theme updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeState'
+        '400':
+          description: Invalid theme value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThemeError'
+
+  /theme/design-tokens:
+    get:
+      summary: Get design tokens
+      description: Returns current design token values for the active theme
+      tags:
+        - Theme
+      parameters:
+        - in: query
+          name: theme
+          schema:
+            type: string
+            enum: ["light", "dark"]
+          description: "Specific theme to get tokens for"
+        - in: query
+          name: category
+          schema:
+            type: string
+            enum: ["color", "typography", "spacing", "shadow"]
+          description: "Filter tokens by category"
+      responses:
+        '200':
+          description: Design tokens for requested theme/category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DesignTokens'
+
+components:
+  schemas:
+    ThemeState:
+      type: object
+      properties:
+        current:
+          type: string
+          enum: ["light", "dark"]
+          example: "dark"
+          description: "Currently active theme"
+        preference:
+          type: string
+          enum: ["light", "dark", "system"]
+          example: "system"
+          description: "User's stored preference"
+        systemPreference:
+          type: string
+          enum: ["light", "dark"]
+          example: "dark"
+          description: "Detected system preference"
+        isSystemSupported:
+          type: boolean
+          example: true
+          description: "Whether system preference detection is available"
+
+    ThemeUpdateRequest:
+      type: object
+      required:
+        - theme
+      properties:
+        theme:
+          type: string
+          enum: ["light", "dark", "system"]
+          example: "dark"
+        persistPreference:
+          type: boolean
+          default: true
+          description: "Whether to save preference to localStorage"
+
+    DesignTokens:
+      type: object
+      properties:
+        theme:
+          type: string
+          enum: ["light", "dark"]
+          example: "dark"
+        colors:
+          type: object
+          properties:
+            primary:
+              type: string
+              example: "#dc2626"
+            secondary:
+              type: string
+              example: "#2563eb"
+            background:
+              type: string
+              example: "#000000"
+            surface:
+              type: string
+              example: "#111111"
+            text:
+              type: object
+              properties:
+                primary:
+                  type: string
+                  example: "#ffffff"
+                secondary:
+                  type: string
+                  example: "#a3a3a3"
+        typography:
+          type: object
+          properties:
+            fontFamily:
+              type: object
+              properties:
+                display:
+                  type: string
+                  example: "'Inter', sans-serif"
+                body:
+                  type: string
+                  example: "'Inter', sans-serif"
+            fontSize:
+              type: object
+              properties:
+                xs:
+                  type: string
+                  example: "0.75rem"
+                sm:
+                  type: string
+                  example: "0.875rem"
+                base:
+                  type: string
+                  example: "1rem"
+                lg:
+                  type: string
+                  example: "1.125rem"
+                xl:
+                  type: string
+                  example: "1.25rem"
+                "2xl":
+                  type: string
+                  example: "1.5rem"
+                "4xl":
+                  type: string
+                  example: "2.25rem"
+                "6xl":
+                  type: string
+                  example: "3.75rem"
+            fontWeight:
+              type: object
+              properties:
+                light:
+                  type: integer
+                  example: 300
+                normal:
+                  type: integer
+                  example: 400
+                medium:
+                  type: integer
+                  example: 500
+                semibold:
+                  type: integer
+                  example: 600
+                bold:
+                  type: integer
+                  example: 700
+                extrabold:
+                  type: integer
+                  example: 800
+                black:
+                  type: integer
+                  example: 900
+        spacing:
+          type: object
+          properties:
+            xs:
+              type: string
+              example: "0.5rem"
+            sm:
+              type: string
+              example: "1rem"
+            md:
+              type: string
+              example: "1.5rem"
+            lg:
+              type: string
+              example: "3rem"
+            xl:
+              type: string
+              example: "6rem"
+        shadows:
+          type: object
+          properties:
+            subtle:
+              type: string
+              example: "0 1px 3px rgba(0, 0, 0, 0.12)"
+            medium:
+              type: string
+              example: "0 4px 12px rgba(0, 0, 0, 0.15)"
+            strong:
+              type: string
+              example: "0 10px 25px rgba(0, 0, 0, 0.2)"
+
+    ThemeError:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "INVALID_THEME"
+        message:
+          type: string
+          example: "Theme value must be 'light', 'dark', or 'system'"
+        allowedValues:
+          type: array
+          items:
+            type: string
+          example: ["light", "dark", "system"]
