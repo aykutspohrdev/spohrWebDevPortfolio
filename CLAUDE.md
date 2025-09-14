@@ -2,8 +2,10 @@
 
 ## Project Overview
 Bold Minimalism portfolio website targeting German SMBs. Single-page application with fragment navigation, accessibility compliance (BFSG/EAA + WCAG AA), and GDPR-compliant contact form.
+See @specs/001-create-a-web/quickstart.md for more detailed information on the project.
 
 ## Tech Stack
+See @specs/001-create-a-web/plan.md for more specifics tech-wise
 - **Framework**: Next.js 14+ (App Router)
 - **Styling**: TailwindCSS with design tokens
 - **Deployment**: Cloudflare Workers via Wrangler
@@ -49,7 +51,8 @@ src/
 
 ## Current Development Phase
 **Phase 1 Complete**: Research, data model, API contracts, quickstart guide
-**Next Phase**: Task generation via /tasks command
+**Phase 2 Complete**: Task generation via /tasks command
+**Current Phase**: Task execution (See @specs/001-create-a-web/tasks.md for information on how tasks should be executed and what they entail)
 
 ## Key Constraints
 - **German Legal**: BFSG accessibility compliance by June 2025
@@ -60,7 +63,7 @@ src/
 
 ## Recent Changes
 1. **2025-09-13**: Initial specification and planning phase completed
-2. **Research Phase**: Bold Minimalism principles, German accessibility law, Next.js fragment navigation
+2. **Research Phase**: Bold Minimalism principles, German accessibility law, Next.js fragment navigation (See @specs/001-create-a-web/research.md for more information **CRUCIAL**)
 3. **Design Phase**: Data models, API contracts for contact/navigation/theme management
 
 ## Development Notes

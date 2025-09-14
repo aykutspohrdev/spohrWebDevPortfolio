@@ -20,11 +20,12 @@ import type {
  * Main Pricing Tiers
  * Three core packages: Landing, Standard, Custom
  */
-export const pricingTiers: PricingTier[] = [
+export const pricingTiers = [
   {
     id: 'landing-tier',
     name: 'Landing',
-    description: 'Perfekt für Startups und kleine Unternehmen, die professionell online starten möchten.',
+    shortDescription: 'Perfekt für Startups und kleine Unternehmen, die professionell online starten möchten.',
+    description: 'Moderne One-Page Website mit allem was Sie für den professionellen Online-Start brauchen.',
     features: [
       'Moderne One-Page Website',
       'Responsive Design für alle Geräte',
@@ -35,44 +36,32 @@ export const pricingTiers: PricingTier[] = [
       'Social Media Verlinkung',
       '3 Monate kostenloser Support'
     ],
-    startingPrice: {
-      amount: 1999,
+    pricing: {
+      type: 'fixed',
+      basePrice: 1999,
       currency: 'EUR',
-      period: 'one-time',
-      display: 'ab 1.999 €',
-      notes: ['Einmalige Zahlung', 'Keine versteckten Kosten']
+      priceRange: {
+        min: 1999,
+        max: 1999
+      }
     },
-    isCustom: false,
     ctaText: 'Landing Page starten',
-    highlighted: false,
-    displayOrder: 1,
-    status: 'active',
-    popular: false,
+    featured: false,
+    targetAudience: ['startups', 'small-business'],
+    timeline: '2-3 Wochen',
     benefits: [
       'Schneller Online-Start in nur 2-3 Wochen',
       'Kosteneffiziente Lösung für den Einstieg',
       'Professionelles Design stärkt Vertrauen',
       'Mobile-optimiert für alle Besucher',
       'Suchmaschinenoptimiert für bessere Auffindbarkeit'
-    ],
-    limitations: [
-      'Nur eine Seite (One-Pager)',
-      'Begrenzte Content-Bereiche',
-      'Kein Content Management System',
-      'Keine E-Commerce Funktionen',
-      'Keine komplexen Integrationen'
-    ],
-    timeline: '2-3 Wochen',
-    revisions: 2,
-    supportDuration: '3 Monate',
-    category: 'website',
-    targetClients: ['startup', 'small-business', 'personal'],
-    subtitle: 'Der perfekte Start'
+    ]
   },
   {
     id: 'standard-tier',
     name: 'Standard',
-    description: 'Die beliebteste Lösung für etablierte Unternehmen mit umfangreichen Website-Anforderungen.',
+    shortDescription: 'Die beliebteste Lösung für etablierte Unternehmen mit umfangreichen Website-Anforderungen.',
+    description: 'Vollständige Unternehmenswebsite mit CMS, Blog und erweiterten Marketing-Features.',
     features: [
       'Mehrseitige Website (bis zu 10 Seiten)',
       'Content Management System (CMS)',
@@ -86,82 +75,32 @@ export const pricingTiers: PricingTier[] = [
       'DSGVO-konforme Cookie-Banner',
       '6 Monate Premium-Support'
     ],
-    startingPrice: {
-      amount: 4999,
-      maxAmount: 8999,
+    pricing: {
+      type: 'fixed',
+      basePrice: 6499,
       currency: 'EUR',
-      period: 'one-time',
-      display: '4.999 € - 8.999 €',
-      notes: ['Je nach Seitenanzahl und Funktionsumfang', 'Ratenzahlung möglich']
+      priceRange: {
+        min: 4999,
+        max: 8999
+      }
     },
-    isCustom: false,
     ctaText: 'Standard Website anfragen',
-    highlighted: true,
-    displayOrder: 2,
-    status: 'featured',
-    popular: true,
+    featured: true,
+    targetAudience: ['small-business', 'medium-business'],
+    timeline: '4-6 Wochen',
     benefits: [
       'Vollständige Unternehmenswebsite mit CMS',
       'Selbstständige Inhaltspflege ohne Programmierkenntnisse',
       'Professionelle SEO für bessere Google-Rankings',
       'Blog-System für Content-Marketing',
       'Umfassender Support für 6 Monate inklusive'
-    ],
-    limitations: [
-      'Keine E-Commerce Funktionen',
-      'Standard-Integrationen (keine individuellen APIs)',
-      'Basierend auf bewährten Templates'
-    ],
-    timeline: '4-6 Wochen',
-    revisions: 3,
-    supportDuration: '6 Monate',
-    category: 'website',
-    targetClients: ['small-business', 'medium-business'],
-    subtitle: 'Beliebteste Wahl',
-    addOns: [
-      {
-        id: 'professional-photography',
-        name: 'Professionelle Fotografie',
-        description: 'Business-Shooting für authentische Unternehmensfotos',
-        price: {
-          amount: 899,
-          currency: 'EUR',
-          period: 'one-time',
-          display: '899 €'
-        },
-        recommended: true,
-        category: 'content'
-      },
-      {
-        id: 'advanced-seo',
-        name: 'Erweiterte SEO-Optimierung',
-        description: 'Umfassende Keyword-Recherche und On-Page-Optimierung',
-        price: {
-          amount: 1299,
-          currency: 'EUR',
-          period: 'one-time',
-          display: '1.299 €'
-        },
-        category: 'marketing'
-      },
-      {
-        id: 'multilingual',
-        name: 'Mehrsprachigkeit (EN/DE)',
-        description: 'Website in deutscher und englischer Sprache',
-        price: {
-          amount: 1999,
-          currency: 'EUR',
-          period: 'one-time',
-          display: '1.999 €'
-        },
-        category: 'development'
-      }
     ]
   },
   {
     id: 'custom-tier',
     name: 'Custom',
-    description: 'Maßgeschneiderte Lösungen für komplexe Anforderungen und individuelle Unternehmensprozesse.',
+    shortDescription: 'Maßgeschneiderte Lösungen für komplexe Anforderungen und individuelle Unternehmensprozesse.',
+    description: 'Vollständig individuell entwickelte Website mit maßgeschneiderten Funktionen und unbegrenzten Möglichkeiten.',
     features: [
       'Individuelles Website-Design',
       'Unbegrenzte Seitenzahl',
@@ -175,31 +114,20 @@ export const pricingTiers: PricingTier[] = [
       'Wartungsvertrag optional',
       '12 Monate Premium-Support'
     ],
-    isCustom: true,
+    pricing: {
+      type: 'consultation'
+    },
     ctaText: 'Kostenlose Beratung buchen',
-    highlighted: false,
-    displayOrder: 3,
-    status: 'active',
-    popular: false,
+    featured: false,
+    targetAudience: ['medium-business', 'enterprise'],
+    timeline: '8-16 Wochen',
     benefits: [
       'Vollständig individuell auf Ihr Unternehmen zugeschnitten',
       'Komplexe Geschäftsprozesse digital abbildbar',
       'Skalierbare Lösung für wachsende Anforderungen',
       'Wettbewerbsvorteil durch einzigartige Features',
       'Langfristige Betreuung und Weiterentwicklung'
-    ],
-    timeline: '8-16 Wochen',
-    revisions: 5,
-    supportDuration: '12 Monate',
-    category: 'website',
-    targetClients: ['medium-business', 'enterprise'],
-    subtitle: 'Individuell & Skalierbar',
-    customContact: {
-      method: 'form',
-      value: '/kontakt#custom-project',
-      label: 'Kostenlose Erstberatung vereinbaren',
-      availability: 'Mo-Fr 9:00-18:00 Uhr'
-    }
+    ]
   }
 ];
 
@@ -338,82 +266,195 @@ export const featureComparison: PricingComparison[] = [
 ];
 
 /**
+ * Tier Comparison Features
+ * Structured data for feature comparison table
+ */
+export const TIER_COMPARISON_FEATURES = [
+  {
+    name: 'Responsive Design',
+    tiers: {
+      'landing-tier': true,
+      'standard-tier': true,
+      'custom-tier': true
+    }
+  },
+  {
+    name: 'Seitenzahl',
+    tiers: {
+      'landing-tier': '1 Seite',
+      'standard-tier': 'Bis zu 10',
+      'custom-tier': 'Unbegrenzt'
+    }
+  },
+  {
+    name: 'Content Management',
+    tiers: {
+      'landing-tier': false,
+      'standard-tier': true,
+      'custom-tier': true
+    }
+  },
+  {
+    name: 'Blog-System',
+    tiers: {
+      'landing-tier': false,
+      'standard-tier': true,
+      'custom-tier': true
+    }
+  },
+  {
+    name: 'E-Commerce',
+    tiers: {
+      'landing-tier': false,
+      'standard-tier': false,
+      'custom-tier': 'Optional'
+    }
+  },
+  {
+    name: 'SEO-Optimierung',
+    tiers: {
+      'landing-tier': 'Basis',
+      'standard-tier': 'Erweitert',
+      'custom-tier': 'Vollständig'
+    }
+  },
+  {
+    name: 'Google Analytics',
+    tiers: {
+      'landing-tier': true,
+      'standard-tier': true,
+      'custom-tier': true
+    }
+  },
+  {
+    name: 'Support-Dauer',
+    tiers: {
+      'landing-tier': '3 Monate',
+      'standard-tier': '6 Monate',
+      'custom-tier': '12 Monate'
+    }
+  },
+  {
+    name: 'Revisionen',
+    tiers: {
+      'landing-tier': '2 Runden',
+      'standard-tier': '3 Runden',
+      'custom-tier': '5 Runden'
+    }
+  },
+  {
+    name: 'Team-Schulung',
+    tiers: {
+      'landing-tier': false,
+      'standard-tier': 'CMS Basic',
+      'custom-tier': 'Umfassend'
+    }
+  },
+  {
+    name: 'System-Integrationen',
+    tiers: {
+      'landing-tier': 'Social Media',
+      'standard-tier': 'Newsletter & Maps',
+      'custom-tier': 'Individuell'
+    }
+  },
+  {
+    name: 'Performance-Optimierung',
+    tiers: {
+      'landing-tier': 'Standard',
+      'standard-tier': 'Erweitert',
+      'custom-tier': 'Maximum'
+    }
+  }
+];
+
+/**
  * Available Add-Ons for all tiers
  */
-export const availableAddOns: PricingAddOn[] = [
+export const availableAddOns = [
   {
     id: 'professional-photography',
     name: 'Professionelle Fotografie',
-    description: 'Business-Shooting mit bis zu 50 bearbeiteten Fotos',
-    price: {
-      amount: 899,
-      currency: 'EUR',
-      period: 'one-time',
-      display: '899 €',
-      notes: ['Halbtags-Shooting', 'Nachbearbeitung inklusive']
-    },
+    description: 'Business-Shooting mit bis zu 50 bearbeiteten Fotos für authentische Unternehmensdarstellung',
+    price: 899,
+    billing: 'one-time',
+    features: [
+      'Halbtags Business-Shooting vor Ort',
+      'Bis zu 50 professionell bearbeitete Fotos',
+      'High-Resolution Downloads für Web und Print',
+      'Nutzungsrechte für Website und Marketing'
+    ],
     recommended: true,
     category: 'content'
   },
   {
     id: 'copywriting',
     name: 'Professionelle Texterstellung',
-    description: 'SEO-optimierte Texte für alle Website-Bereiche',
-    price: {
-      amount: 149,
-      currency: 'EUR',
-      period: 'one-time',
-      display: 'ab 149 €/Seite',
-      notes: ['Pro Seite', 'SEO-optimiert', 'Zielgruppengerecht']
-    },
+    description: 'SEO-optimierte Texte für alle Website-Bereiche von erfahrenen Textern',
+    price: 149,
+    billing: 'per-page',
+    features: [
+      'Zielgruppengerechte Ansprache',
+      'SEO-optimierte Keywords',
+      'Call-to-Action Optimierung',
+      'Bis zu 2 Korrekturschleifen pro Seite'
+    ],
     category: 'content'
   },
   {
     id: 'advanced-seo',
     name: 'Erweiterte SEO-Optimierung',
-    description: 'Keyword-Recherche, Konkurrenzanalyse und technische SEO',
-    price: {
-      amount: 1299,
-      currency: 'EUR',
-      period: 'one-time',
-      display: '1.299 €'
-    },
+    description: 'Umfassende SEO-Strategie für bessere Google-Rankings und mehr organischen Traffic',
+    price: 1299,
+    billing: 'one-time',
+    features: [
+      'Ausführliche Keyword-Recherche und -Analyse',
+      'Konkurrenzanalyse und Marktpositionierung',
+      'Technische SEO-Optimierung',
+      'Google My Business Optimierung'
+    ],
     category: 'marketing'
   },
   {
     id: 'multilingual-setup',
     name: 'Mehrsprachige Website',
-    description: 'Komplette Website in deutscher und englischer Sprache',
-    price: {
-      amount: 1999,
-      currency: 'EUR',
-      period: 'one-time',
-      display: '1.999 €'
-    },
+    description: 'Komplette Website-Umsetzung in deutscher und englischer Sprache',
+    price: 1999,
+    billing: 'one-time',
+    features: [
+      'Vollständige Übersetzung aller Inhalte',
+      'Separate URL-Struktur für jede Sprache',
+      'Automatische Spracherkennung',
+      'SEO-Optimierung für beide Sprachen'
+    ],
     category: 'development'
   },
   {
     id: 'social-media-integration',
     name: 'Social Media Integration',
-    description: 'Automatische Beitragseinbindung von Instagram, Facebook, LinkedIn',
-    price: {
-      amount: 499,
-      currency: 'EUR',
-      period: 'one-time',
-      display: '499 €'
-    },
+    description: 'Automatische Einbindung Ihrer Social Media Kanäle in die Website',
+    price: 499,
+    billing: 'one-time',
+    features: [
+      'Instagram Feed-Integration',
+      'Facebook und LinkedIn Verknüpfung',
+      'Automatische Social Media Icons',
+      'Social Sharing Buttons auf allen Seiten'
+    ],
     category: 'marketing'
   },
   {
     id: 'maintenance-package',
     name: 'Website-Wartungspaket',
-    description: 'Monatliche Updates, Backups und technischer Support',
-    price: {
-      amount: 149,
-      currency: 'EUR',
-      period: 'monthly',
-      display: 'ab 149 €/Monat'
-    },
+    description: 'Monatliche Website-Betreuung für optimale Performance und Sicherheit',
+    price: 149,
+    billing: 'monthly',
+    features: [
+      'Regelmäßige Updates und Backups',
+      'Performance-Monitoring und -Optimierung',
+      'Technischer Support und Bugfixes',
+      'Monatlicher Performance-Report'
+    ],
     category: 'maintenance'
   }
 ];
@@ -537,5 +578,8 @@ export const pricingStats = {
     max: Math.max(...pricingTiers.map(t => parseInt(t.supportDuration?.split(' ')[0] || '0')))
   }
 };
+
+// Export alias for component compatibility
+export const pricingAddOns = availableAddOns;
 
 export default pricingTiers;

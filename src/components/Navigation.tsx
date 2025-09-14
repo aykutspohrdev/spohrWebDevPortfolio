@@ -1,14 +1,20 @@
 'use client';
 
 /**
- * Responsive Navigation Component
+ * Responsive Navigation Component with Fragment Navigation
  * Implements accessibility-compliant navigation with fragment link support
  * Follows WCAG 2.1 AA standards for German compliance (BFSG/EAA)
+ * Integrated with fragment navigation system for smooth scrolling
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useTheme, ThemeToggle } from './ThemeProvider';
+import {
+  useFragmentNavigation,
+  createNavigationItems,
+  SectionConfig
+} from '../lib/navigation';
 
 export interface NavigationItem {
   id: string;
@@ -18,20 +24,32 @@ export interface NavigationItem {
 }
 
 interface NavigationProps {
-  items: NavigationItem[];
-  currentSection?: string;
   className?: string;
   logoText?: string;
   logoHref?: string;
 }
 
 /**
- * Main Navigation Component
+ * Portfolio sections configuration
+ */
+const PORTFOLIO_SECTIONS: SectionConfig[] = [
+  { id: 'hero', title: 'Start' },
+  { id: 'services', title: 'Services' },
+  { id: 'key-results', title: 'Erfolge' },
+  { id: 'portfolio', title: 'Portfolio' },
+  { id: 'pricing', title: 'Preise' },
+  { id: 'process', title: 'Vorgehen' },
+  { id: 'testimonials', title: 'Referenzen' },
+  { id: 'about', title: 'Über mich' },
+  { id: 'faq', title: 'FAQ' },
+  { id: 'contact', title: 'Kontakt' },
+];
+
+/**
+ * Main Navigation Component with Fragment Navigation
  * Responsive navigation with mobile hamburger menu and accessibility features
  */
 export function Navigation({
-  items,
-  currentSection = '',
   className = '',
   logoText = 'Aykut Spohr',
   logoHref = '/'
@@ -40,6 +58,12 @@ export function Navigation({
   const [isScrolled, setIsScrolled] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Fragment navigation hook
+  const { activeSection, navigateToSection } = useFragmentNavigation(PORTFOLIO_SECTIONS);
+
+  // Create navigation items from sections
+  const navigationItems = createNavigationItems(PORTFOLIO_SECTIONS);
 
   // Handle scroll effect for navigation styling
   useEffect(() => {
@@ -183,11 +207,12 @@ export function Navigation({
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <ul className="flex space-x-8" role="menubar">
-              {items.map((item) => (
+              {navigationItems.map((item) => (
                 <li key={item.id} role="none">
                   <NavigationLink
                     item={item}
-                    isActive={currentSection === item.id}
+                    isActive={activeSection === item.id}
+                    onNavigate={navigateToSection}
                     onClick={closeMobileMenu}
                     role="menuitem"
                   />
@@ -246,11 +271,12 @@ export function Navigation({
         aria-label="Mobile Navigation"
       >
         <div className="px-2 pt-2 pb-3 space-y-1">
-          {items.map((item) => (
+          {navigationItems.map((item) => (
             <NavigationLink
               key={item.id}
               item={item}
-              isActive={currentSection === item.id}
+              isActive={activeSection === item.id}
+              onNavigate={navigateToSection}
               onClick={closeMobileMenu}
               mobile
               role="menuitem"
@@ -273,12 +299,13 @@ export function Navigation({
 }
 
 /**
- * Navigation Link Component
- * Handles both desktop and mobile navigation links
+ * Navigation Link Component with Fragment Navigation
+ * Handles both desktop and mobile navigation links with smooth scrolling
  */
 interface NavigationLinkProps {
   item: NavigationItem;
   isActive: boolean;
+  onNavigate: (sectionId: string) => Promise<void>;
   onClick: () => void;
   mobile?: boolean;
   role?: string;
@@ -287,10 +314,25 @@ interface NavigationLinkProps {
 function NavigationLink({
   item,
   isActive,
+  onNavigate,
   onClick,
   mobile = false,
   role = 'menuitem'
 }: NavigationLinkProps): JSX.Element {
+
+  // Handle navigation click
+  const handleClick = useCallback(
+    async (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+
+      // Close mobile menu
+      onClick();
+
+      // Navigate to section with smooth scrolling
+      await onNavigate(item.id);
+    },
+    [item.id, onNavigate, onClick]
+  );
   const baseClasses = `
     font-medium transition-colors duration-200
     focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2
@@ -316,16 +358,16 @@ function NavigationLink({
   `;
 
   return (
-    <Link
+    <a
       href={item.href}
       className={mobile ? mobileClasses : desktopClasses}
-      onClick={onClick}
+      onClick={handleClick}
       role={role}
       aria-label={item.ariaLabel || `Zu ${item.title} springen`}
       aria-current={isActive ? 'location' : undefined}
     >
       {item.title}
-    </Link>
+    </a>
   );
 }
 

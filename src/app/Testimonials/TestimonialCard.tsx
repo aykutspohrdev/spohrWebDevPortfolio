@@ -2,9 +2,9 @@
 
 import {
   StarIcon,
-  QuoteIcon,
   BuildingOfficeIcon
 } from '@heroicons/react/24/solid';
+import { ChatBubbleLeftQuoteIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarOutlineIcon } from '@heroicons/react/24/outline';
 import { Card } from '@/components/Layout';
 import type { ClientTestimonial } from '@/types/testimonials';
@@ -86,6 +86,17 @@ export default function TestimonialCard({
   showMetrics = true,
   showProject = true
 }: TestimonialCardProps) {
+  // Early return if testimonial is undefined
+  if (!testimonial) {
+    return (
+      <Card className="h-full">
+        <div className="p-6 lg:p-8 h-full flex items-center justify-center">
+          <p className="text-slate-500 dark:text-slate-400">Keine Testimonial-Daten verfügbar</p>
+        </div>
+      </Card>
+    );
+  }
+
   const industryIcon = INDUSTRY_ICONS[testimonial.clientIndustry as keyof typeof INDUSTRY_ICONS] || INDUSTRY_ICONS.other;
 
   const truncatedText = variant === 'compact'
@@ -102,9 +113,9 @@ export default function TestimonialCard({
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center">
             <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mr-4">
-              <QuoteIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+              <ChatBubbleLeftQuoteIcon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             </div>
-            <StarRating rating={testimonial.rating.overall} size="md" />
+            <StarRating rating={testimonial.rating?.overall || 5} size="md" />
           </div>
 
           {testimonial.featured && (

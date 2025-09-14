@@ -1,3 +1,8 @@
+/* TailwindCSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Design Tokens for Bold Minimalism Portfolio Website */
 /* Based on research findings for German SMB audience */
 
@@ -239,7 +244,285 @@
   --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.7), 0 12px 25px rgba(0, 0, 0, 0.5);
 }
 
-/* === ACCESSIBILITY OVERRIDES === */
+/* === ACCESSIBILITY ENHANCEMENTS === */
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.sr-only.focus:not-sr-only,
+.sr-only:focus:not(.sr-only) {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Skip Navigation Links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  padding: 8px 16px;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 2px solid var(--color-primary);
+  z-index: var(--z-index-skip-link);
+  transition: top var(--transition-duration-fast) var(--transition-timing-ease);
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Focus Management */
+.focus-visible-enabled *:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.focus-visible-enabled *:focus:not(.focus-visible) {
+  outline: none;
+}
+
+/* Reduced Motion */
+.reduce-motion,
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High Contrast Mode */
+.high-contrast {
+  --color-text-primary: #000000;
+  --color-text-secondary: #000000;
+  --color-background: #ffffff;
+  --color-border: #000000;
+  --color-primary: #0000ff;
+  --color-secondary: #0000ff;
+}
+
+[data-theme="dark"].high-contrast {
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #ffffff;
+  --color-background: #000000;
+  --color-border: #ffffff;
+  --color-primary: #ffff00;
+  --color-secondary: #ffff00;
+}
+
+/* Font Size Controls */
+:root {
+  --base-font-size: 16px;
+}
+
+.font-size-normal {
+  --base-font-size: 16px;
+}
+
+.font-size-large {
+  --base-font-size: 18px;
+}
+
+.font-size-larger {
+  --base-font-size: 20px;
+}
+
+/* Apply font size scaling */
+html {
+  font-size: var(--base-font-size);
+}
+
+/* Touch Target Minimum Size (WCAG) */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Ensure interactive elements are properly sized on touch devices */
+@media (pointer: coarse) {
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  a,
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Color Contrast Enhancements */
+@media (prefers-contrast: high) {
+  :root {
+    --color-border: var(--color-neutral-900);
+    --color-text-secondary: var(--color-text-primary);
+  }
+
+  [data-theme="dark"] {
+    --color-border: var(--color-neutral-50);
+    --color-text-secondary: var(--color-text-primary);
+  }
+}
+
+/* Accessibility Control Panel Styles */
+.accessibility-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: var(--z-index-modal);
+}
+
+.accessibility-toggle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-duration-base);
+}
+
+.accessibility-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-xl);
+}
+
+.accessibility-panel {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 320px;
+  background: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  padding: 20px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panel-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  padding: 4px;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.control-group h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-duration-base);
+}
+
+.control-item:hover {
+  background: var(--color-surface);
+}
+
+.control-item input[type="checkbox"],
+.control-item input[type="radio"] {
+  margin: 0;
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-action-button {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all var(--transition-duration-base);
+}
+
+.quick-action-button:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* Reduced Motion Overrides */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --transition-duration-fast: 0ms;

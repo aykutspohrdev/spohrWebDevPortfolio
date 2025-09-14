@@ -112,52 +112,19 @@ export function scrollToSection(
 }
 
 /**
- * Focus management for accessibility
+ * Focus management for accessibility using AccessibilityManager
  */
 function focusSection(element: HTMLElement, sectionId: string): void {
-  // Find the heading within the section
-  const heading = element.querySelector('h1, h2, h3, h4, h5, h6') as HTMLElement;
-  const targetElement = heading || element;
-
-  // Make element focusable if it isn't already
-  if (!targetElement.getAttribute('tabindex')) {
-    targetElement.setAttribute('tabindex', '-1');
+  // Import accessibility manager dynamically to avoid SSR issues
+  if (typeof window !== 'undefined') {
+    import('./accessibility').then(({ getAccessibilityManager }) => {
+      const manager = getAccessibilityManager();
+      manager.focusSection(sectionId);
+    });
   }
-
-  // Focus the element
-  targetElement.focus({ preventScroll: true });
-
-  // Remove tabindex after focus for proper tab order
-  if (targetElement.getAttribute('tabindex') === '-1' && targetElement !== element) {
-    targetElement.removeAttribute('tabindex');
-  }
-
-  // Announce section change to screen readers
-  announceNavigation(sectionId, targetElement.textContent || sectionId);
 }
 
-/**
- * Announce navigation change to screen readers
- */
-function announceNavigation(sectionId: string, sectionTitle: string): void {
-  const announcement = `Navigiert zu ${sectionTitle}`;
-
-  // Create temporary announcement element
-  const announcer = document.createElement('div');
-  announcer.setAttribute('aria-live', 'polite');
-  announcer.setAttribute('aria-atomic', 'true');
-  announcer.className = 'sr-only';
-  announcer.textContent = announcement;
-
-  document.body.appendChild(announcer);
-
-  // Remove after announcement
-  setTimeout(() => {
-    if (document.body.contains(announcer)) {
-      document.body.removeChild(announcer);
-    }
-  }, 1000);
-}
+// Navigation announcements are now handled by AccessibilityManager
 
 /**
  * Update URL with fragment

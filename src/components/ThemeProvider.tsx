@@ -155,18 +155,16 @@ export function ThemeProvider({
     toggleTheme,
   };
 
-  // Don't render content until mounted to prevent hydration mismatch
-  if (!mounted) {
-    return (
-      <div style={{ visibility: 'hidden' }}>
-        {children}
-      </div>
-    );
-  }
-
   return (
     <ThemeContext.Provider value={contextValue}>
-      {children}
+      {/* Don't render content until mounted to prevent hydration mismatch */}
+      {!mounted ? (
+        <div style={{ visibility: 'hidden' }}>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
     </ThemeContext.Provider>
   );
 }
@@ -200,7 +198,18 @@ export function ThemeToggle({
   children,
   showLabel = true
 }: ThemeToggleProps): JSX.Element {
-  const { current, toggleTheme } = useTheme();
+  const context = useContext(ThemeContext);
+
+  // Fallback if context is not available (during SSR or before mount)
+  if (!context) {
+    return (
+      <div className={`min-w-[44px] min-h-[44px] ${className}`} style={{ visibility: 'hidden' }}>
+        <span>🌙</span>
+      </div>
+    );
+  }
+
+  const { current, toggleTheme } = context;
 
   const isDark = current === 'dark';
   const label = isDark ? 'Zu hellem Theme wechseln' : 'Zu dunklem Theme wechseln';

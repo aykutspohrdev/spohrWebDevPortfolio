@@ -67,7 +67,7 @@ export default function ServiceCard({ service, isExpanded = false, onToggleExpan
           <div className="text-right">
             <div className="text-sm text-slate-500 dark:text-slate-400 mb-1">ab</div>
             <div className="text-2xl font-bold text-slate-900 dark:text-white">
-              €{service.pricing.startingPrice.toLocaleString('de-DE')}
+              €{service.startingPrice.min.toLocaleString('de-DE')}
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function ServiceCard({ service, isExpanded = false, onToggleExpan
         {/* Key Features */}
         <div className="mb-6">
           <ul className="space-y-2">
-            {service.keyFeatures.slice(0, isExpanded ? undefined : 3).map((feature, index) => (
+            {service.features.slice(0, isExpanded ? undefined : 3).map((feature, index) => (
               <li key={index} className="flex items-center text-sm text-slate-700 dark:text-slate-300">
                 <CheckIcon className="w-4 h-4 text-green-500 mr-3 flex-shrink-0" />
                 {feature}
@@ -94,12 +94,12 @@ export default function ServiceCard({ service, isExpanded = false, onToggleExpan
             ))}
           </ul>
 
-          {service.keyFeatures.length > 3 && !isExpanded && (
+          {service.features.length > 3 && !isExpanded && (
             <button
               onClick={onToggleExpand}
               className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 mt-2 font-medium"
             >
-              +{service.keyFeatures.length - 3} weitere Features
+              +{service.features.length - 3} weitere Features
             </button>
           )}
         </div>
@@ -110,7 +110,7 @@ export default function ServiceCard({ service, isExpanded = false, onToggleExpan
             Perfekt für:
           </div>
           <div className="flex flex-wrap gap-2">
-            {service.targetAudience.slice(0, 2).map((audience, index) => (
+            {service.targetClients.slice(0, 2).map((audience, index) => (
               <span
                 key={index}
                 className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium rounded-full"
